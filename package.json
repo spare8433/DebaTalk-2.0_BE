@@ -1,0 +1,45 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spare8433/DebaTalk-2.0_BE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spare8433/DebaTalk-2.0_BE/issues"
+  },
+  "homepage": "https://github.com/spare8433/DebaTalk-2.0_BE#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1216.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.2",
+    "helmet": "^6.0.0",
+    "mysql2": "^2.3.3",
+    "pm2": "^5.2.0",
+    "sequelize": "^6.21.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "typescript": "^4.8.3",
+    "ts-node": "^10.9.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "@types/express-session": "^1.17.5",
+    "@types/hpp": "^0.2.2",
+    "@types/morgan": "^1.9.3",
+    "@types/multer": "^1.4.7",
+    "@types/multer-s3": "^3.0.0",
+    "@types/node": "^18.7.18",
+    "@types/passport": "^1.0.11",
+    "@types/passport-local": "^1.0.34"
+  }
+}

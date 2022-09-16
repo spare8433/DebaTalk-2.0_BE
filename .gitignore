@@ -1,0 +1,14 @@
+.env
+/node_modules
+/lambda/node_modules
+/lambda/package-lock.json
+/config
+
+/package-lock.json
+
+# dev
+/uploads
+
+# misc
+.DS_Store
+*.pem
