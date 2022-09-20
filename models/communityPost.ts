@@ -4,18 +4,19 @@ import {
   BelongsToManyAddAssociationMixin,
  } from 'sequelize';
 // import Post from './post';
-import { dbType } from './';
+import { dbType } from '.';
 import sequelize from './sequelize'
 
-class User extends Model {
+class CommunityPost extends Model {
   declare public readonly id : number;
-  declare public nickname : string;
-  declare public userId : string;
-  declare public userEmail : string;
-  declare public password : string;
+  declare public category : string;
+  declare public title : string;
+  declare public content : Element;
+  declare public likeList : string[];
+  declare public unlikeList : string[];
+  declare public hit : number;
   declare public imgUrl : string;
-  declare public level : number;
-  declare public point : number;
+  
   declare public readonly createdAt : Date;
   declare public readonly updatedAt : Date;
 
@@ -29,47 +30,41 @@ class User extends Model {
   // declare public removeFollower: BelongsToManyRemoveAssociationMixin<User, number>;
 }
 
-User.init({
-  nickname: {
-    type: DataTypes.STRING(20),
+CommunityPost.init({
+  category: {
+    type: DataTypes.STRING(10),
+    allowNull:false
   },
-  userEmail: {
-    type: DataTypes.STRING(50)
+  title: {
+    type: DataTypes.STRING(50),
+    allowNull:false
   },
-  userId: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING(100),
-    allowNull: false,
+  content: {
+    type: DataTypes.STRING(5000),
+    allowNull:false
   },
   imgUrl: {
     type: DataTypes.STRING(50)
   },
-  point: {
+  hits: {
     type: DataTypes.INTEGER,
     defaultValue:0
   },
-  level: {
-    type: DataTypes.INTEGER,
-    defaultValue:0
-  }
 }, {
   sequelize,
-  modelName: 'User',
-  tableName: 'user',
+  modelName: 'CommunityPost',
+  tableName: 'cmu_post',
   charset: 'utf8',
   collate: 'utf8_general_ci',
 });
 
 export const associate = (db:dbType) => {
-  db.User.hasMany(db.Opinion, { as: 'Opnions' });
-  db.User.belongsToMany(db.DebatePost, { through: 'LikeOpinion', as: 'Liked'})
-  db.User.hasMany(db.Comment, { as: 'Comments' });
+  db.CommunityPost.hasMany(db.Opinion, { as: 'Opinions'})
+  db.CommunityPost.belongsToMany(db.User, { through: 'Like', as: 'Liked' });
+  // db.User.hasMany(db.Comment);
+  // db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
   // db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'followingId' });
   // db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'followerId' });
 };
 
-export default User;
+export default CommunityPost;

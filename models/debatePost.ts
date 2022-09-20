@@ -4,18 +4,20 @@ import {
   BelongsToManyAddAssociationMixin,
  } from 'sequelize';
 // import Post from './post';
-import { dbType } from './';
+import { dbType } from '.';
 import sequelize from './sequelize'
 
-class User extends Model {
+class DebatePost extends Model {
   declare public readonly id : number;
-  declare public nickname : string;
-  declare public userId : string;
-  declare public userEmail : string;
-  declare public password : string;
+  declare public method : string;
+  declare public category : string;
+  declare public title : string;
+  declare public content : Element;
+  declare public agreementList : string[];
+  declare public oppositionList : string[];
+  declare public hit : number;
   declare public imgUrl : string;
-  declare public level : number;
-  declare public point : number;
+  
   declare public readonly createdAt : Date;
   declare public readonly updatedAt : Date;
 
@@ -29,47 +31,44 @@ class User extends Model {
   // declare public removeFollower: BelongsToManyRemoveAssociationMixin<User, number>;
 }
 
-User.init({
-  nickname: {
-    type: DataTypes.STRING(20),
+DebatePost.init({
+  method: {
+    type: DataTypes.STRING(10),
+    allowNull:false
   },
-  userEmail: {
-    type: DataTypes.STRING(50)
+  category: {
+    type: DataTypes.STRING(10),
+    allowNull:false
   },
-  userId: {
-    type: DataTypes.STRING(20),
-    allowNull: false,
-    unique: true,
+  title: {
+    type: DataTypes.STRING(50),
+    allowNull:false
   },
-  password: {
-    type: DataTypes.STRING(100),
-    allowNull: false,
+  content: {
+    type: DataTypes.STRING(5000),
+    allowNull:false
   },
   imgUrl: {
     type: DataTypes.STRING(50)
   },
-  point: {
+  hits: {
     type: DataTypes.INTEGER,
     defaultValue:0
   },
-  level: {
-    type: DataTypes.INTEGER,
-    defaultValue:0
-  }
 }, {
   sequelize,
-  modelName: 'User',
-  tableName: 'user',
+  modelName: 'DebatePost',
+  tableName: 'dbt_post',
   charset: 'utf8',
   collate: 'utf8_general_ci',
 });
 
 export const associate = (db:dbType) => {
-  db.User.hasMany(db.Opinion, { as: 'Opnions' });
-  db.User.belongsToMany(db.DebatePost, { through: 'LikeOpinion', as: 'Liked'})
-  db.User.hasMany(db.Comment, { as: 'Comments' });
+  db.DebatePost.hasMany(db.Opinion, { as: 'Opinions'})
+  // db.User.hasMany(db.Comment);
+  // db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
   // db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'followingId' });
   // db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'followerId' });
 };
 
-export default User;
+export default DebatePost;

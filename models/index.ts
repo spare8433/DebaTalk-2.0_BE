@@ -1,19 +1,33 @@
-import User , { associate as asTest } from './user';
+import User , { associate as associateUser } from './user';
+import DebatePost , { associate as associateDebatePost } from './debatePost';
+import Opinion , { associate as associateOpinion } from './opinion';
+import Comment , { associate as associateComment } from './comment';
+import Reply , { associate as associateReply } from './reply';
+import CommunityPost , { associate as associateCommunityPost } from './communityPost';
+import CommunityPostLike , { associate as associateCommunityPostLike } from './communityPostLike';
+
 
 export * from './sequelize';
 
 const db = {
   User,
+  DebatePost,
+  Opinion,
+  Comment,
+  Reply,
+  CommunityPost,
+  CommunityPostLike
 };
 
-console.log('index db', db);
 export type dbType = typeof db;
-console.log('index user', User);
 
-console.log('associate 테스트',asTest);
-
-asTest(db)
-
+associateUser(db)
+associateDebatePost(db)
+associateOpinion(db)
+associateComment(db)
+associateReply(db)
+associateCommunityPost(db)
+associateCommunityPostLike(db)
 
 // console.log(Object.keys(db).map(v => {
 //   if (db[v].associate) {
