@@ -1,5 +1,5 @@
 import express from 'express'
-import session from 'express-session'
+import expressSession  from 'express-session'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import morgan from 'morgan'
@@ -14,18 +14,19 @@ import passport from 'passport'
 import userRotuer from './routes/user'
 import { sequelize } from './models'
 // import hashtagRotuer from './routes/hashtag'
-// import passportConfig from './passport'
+import passportConfig from './passport'
 
 const app = express()
 
 dotenv.config()
+
+passportConfig();
 
 sequelize.sync()
   .then(() => {
     console.log('db 연결 성공')
   }).catch(console.error)
 
-// passportConfig();
 
 app.use('/', express.static(path.join(__dirname, 'uploads')))
 app.use(express.json()) // json 데이터 처리
@@ -34,18 +35,19 @@ app.use(cookieParser(process.env.COOKIE_SECRET))
 
 
 app.use(cors({
-  origin: ['http://localhost:3000', `http://${process.env.FRONT_URL}`],
+  // origin: ['http://localhost:3000', `http://${process.env.FRONT_URL}`],
+  origin: true,
   credentials: true,  // 쿠키 공유
 }))
 
-app.use(session({
+app.use(expressSession({
   saveUninitialized: false,
   resave: false,
   secret: process.env.COOKIE_SECRET!,
   cookie:{
     httpOnly:true,
     secure: false,
-    domain: (process.env.NODE_ENV) === 'production' ? '.spare8433.kro.kr' : ''
+    // domain: (process.env.NODE_ENV) === 'production' ? '.spare8433.kro.kr' : 'http://localhost:3000'
   }
 }))
 

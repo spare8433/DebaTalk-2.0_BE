@@ -5,6 +5,7 @@ import {
  } from 'sequelize';
 // import Post from './post';
 import { dbType } from '.';
+import CommunityPostLike from './communityPostLike';
 import sequelize from './sequelize'
 
 class CommunityPost extends Model {
@@ -60,7 +61,8 @@ CommunityPost.init({
 
 export const associate = (db:dbType) => {
   db.CommunityPost.hasMany(db.Opinion, { as: 'Opinions'})
-  db.CommunityPost.belongsToMany(db.User, { through: 'Like', as: 'Liked' });
+
+  db.CommunityPost.belongsToMany(db.User, { through: CommunityPostLike, as: 'Liked', foreignKey:'UserId'});
   // db.User.hasMany(db.Comment);
   // db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
   // db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'followingId' });

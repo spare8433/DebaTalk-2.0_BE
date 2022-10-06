@@ -5,13 +5,14 @@ import {
  } from 'sequelize';
 // import Post from './post';
 import { dbType } from './';
+import CommunityPostLike from './communityPostLike';
 import sequelize from './sequelize'
 
 class User extends Model {
   declare public readonly id : number;
   declare public nickname : string;
   declare public userId : string;
-  declare public userEmail : string;
+  declare public email : string;
   declare public password : string;
   declare public imgUrl : string;
   declare public level : number;
@@ -33,7 +34,7 @@ User.init({
   nickname: {
     type: DataTypes.STRING(20),
   },
-  userEmail: {
+  email: {
     type: DataTypes.STRING(50)
   },
   userId: {
@@ -46,7 +47,8 @@ User.init({
     allowNull: false,
   },
   imgUrl: {
-    type: DataTypes.STRING(50)
+    type: DataTypes.STRING(50),
+    allowNull:true
   },
   point: {
     type: DataTypes.INTEGER,
@@ -66,8 +68,15 @@ User.init({
 
 export const associate = (db:dbType) => {
   db.User.hasMany(db.Opinion, { as: 'Opnions' });
-  db.User.belongsToMany(db.DebatePost, { through: 'LikeOpinion', as: 'Liked'})
+  db.User.hasMany(db.CommunityPost, { as: 'CommunityPosts'} )
   db.User.hasMany(db.Comment, { as: 'Comments' });
+  db.User.hasMany(db.Reply, { as: 'Replys' });
+
+  db.User.belongsToMany(db.CommunityPost, { through: CommunityPostLike, as: 'LikedCommunityPosts', foreignKey:'CommunityPostId'});
+  db.User.belongsToMany(db.Opinion, { through: 'LikeOpinion', as: 'LikedOpinions'})
+  db.User.belongsToMany(db.Comment, { through: 'LikeComment', as: 'LikedComments'})
+  db.User.belongsToMany(db.Reply, { through: 'LikeReply', as: 'LikedReplys'})
+
   // db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'followingId' });
   // db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'followerId' });
 };
