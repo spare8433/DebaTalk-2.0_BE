@@ -12,6 +12,7 @@ import passport from 'passport'
 // import postRotuer from './routes/post'
 // import postsRotuer from './routes/posts'
 import userRotuer from './routes/user'
+import debatePostsRotuer from './routes/debatePosts'
 import { sequelize } from './models'
 // import hashtagRotuer from './routes/hashtag'
 import passportConfig from './passport'
@@ -59,7 +60,7 @@ app.get('/', (req, res) => {
 })
 
 // app.use('/post', postRotuer)
-// app.use('/posts', postsRotuer)
+app.use('/debate-posts', debatePostsRotuer)
 app.use('/user', userRotuer)
 // app.use('/hashtag', hashtagRotuer)
 
