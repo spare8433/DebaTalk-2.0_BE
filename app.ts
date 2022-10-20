@@ -9,12 +9,16 @@ import hpp from 'hpp'
 import helmet from 'helmet'
 import passport from 'passport'
 
-// import postRotuer from './routes/post'
-// import postsRotuer from './routes/posts'
 import userRotuer from './routes/user'
 import debatePostsRotuer from './routes/debatePosts'
+import debatePostRotuer from './routes/debatePost'
+
+import balanceDebatePost from './routes/balanceDebatePost'
+import prosConsDebatePost from './routes/prosConsDebatePost'
+import issueDebatePost from './routes/issueDebatePost'
+
+
 import { sequelize } from './models'
-// import hashtagRotuer from './routes/hashtag'
 import passportConfig from './passport'
 
 const app = express()
@@ -59,8 +63,11 @@ app.get('/', (req, res) => {
   res.send('hello express')
 })
 
-// app.use('/post', postRotuer)
+app.use('/balance-debate-post', balanceDebatePost)
+app.use('/proscons-debate-post', prosConsDebatePost)
+app.use('/issue-debate-post', issueDebatePost)
 app.use('/debate-posts', debatePostsRotuer)
+app.use('/debate-post', debatePostRotuer)
 app.use('/user', userRotuer)
 // app.use('/hashtag', hashtagRotuer)
 
