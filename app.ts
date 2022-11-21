@@ -13,9 +13,10 @@ import userRotuer from './routes/user'
 import debatePostsRotuer from './routes/debatePosts'
 import debatePostRotuer from './routes/debatePost'
 
-import balanceDebatePost from './routes/balanceDebatePost'
-import prosConsDebatePost from './routes/prosConsDebatePost'
-import issueDebatePost from './routes/issueDebatePost'
+import balanceDebatePostRotuer from './routes/balanceDebatePost'
+import balanceDebatePostsRotuer from './routes/balanceDebatePosts'
+import prosConsDebatePostRotuer from './routes/prosConsDebatePost'
+import issueDebatePostRotuer from './routes/issueDebatePost'
 
 
 import { sequelize } from './models'
@@ -63,9 +64,10 @@ app.get('/', (req, res) => {
   res.send('hello express')
 })
 
-app.use('/balance-debate-post', balanceDebatePost)
-app.use('/proscons-debate-post', prosConsDebatePost)
-app.use('/issue-debate-post', issueDebatePost)
+app.use('/balance-debate-post', balanceDebatePostRotuer)
+app.use('/balance-debate-posts', balanceDebatePostsRotuer)
+app.use('/proscons-debate-post', prosConsDebatePostRotuer)
+app.use('/issue-debate-post', issueDebatePostRotuer)
 app.use('/debate-posts', debatePostsRotuer)
 app.use('/debate-post', debatePostRotuer)
 app.use('/user', userRotuer)

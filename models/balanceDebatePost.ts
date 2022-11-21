@@ -26,6 +26,14 @@ BalanceDebatePost.init({
     type: DataTypes.STRING(50),
     allowNull:false
   },
+  optionA: {
+    type: DataTypes.STRING(50),
+    allowNull:false
+  },
+  optionB: {
+    type: DataTypes.STRING(50),
+    allowNull:false
+  },
   article: {
     type: DataTypes.STRING(1000),
     allowNull:false
@@ -58,7 +66,10 @@ BalanceDebatePost.init({
 });
 
 export const associate = (db:dbType) => {
-  db.BalanceDebatePost.hasMany(db.Opinion) // 변경예정
+  db.BalanceDebatePost.hasMany(db.BalanceOpinion)
+  db.BalanceDebatePost.hasMany(db.BalanceOpinion, { as: 'OptionAList', scope: { selection: 'A' } })
+  db.BalanceDebatePost.hasMany(db.BalanceOpinion, { as: 'OptionBList', scope: { selection: 'B' } })
+  db.BalanceDebatePost.belongsTo(db.User)
 };
 
 export default BalanceDebatePost;
