@@ -10,17 +10,10 @@ import Comment from '../models/comment';
 import CommunityPostLike from '../models/communityPostLike';
 import Reply from '../models/reply';
 import CommunityPost from '../models/communityPost';
+import BalanceOpinion from '../models/balanceOpinion';
+import BalanceReply from '../models/balanceReply';
 
 const router = express.Router();
-
-router.get('/', async (req, res, next) => {
- try {
-  const test = await User.findAll();
-  res.status(200).json(test)
- } catch (error) {
-  console.log(error);
- } 
-})
 
 // 회원가입
 router.post('/', isNotLoggedIn, async (req, res, next) => {
@@ -53,7 +46,6 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
 // 로그인
 router.post('/login', isNotLoggedIn, async (req, res, next) => {
   try {
-    
     passport.authenticate('local', (err:Error, user:User, info:{ message: string}) => {
       if(err) {
         return next(err)
@@ -118,36 +110,37 @@ router.post('/logout', isLoggedIn, (req, res, next) => {
   res.send('ok')
 })
 
-// // 본인 정보 가져오기
-// router.get('/', async (req, res, next) => {
-//   try {
-//     if (!req.user) return res.status(401).json(null)
-//     const fullUserWithoutPassword = await User.findOne({
-//       where: { id: req.user.id },
-//       attributes: {
-//         exclued: ['password']
-//       },
-//       include: [{
-//         model: Post,
-//         attributes: ['id'],
-//       }, {
-//         model: User,
-//         as: 'Followings',
-//         attributes: ['id'],
-//       }, {  
-//         model: User,
-//         as: 'Followers',
-//         attributes: ['id'],
-//       }]
-//     })
+// 본인 정보 가져오기
+router.get('/', isLoggedIn, async (req, res, next) => {
+  try {
+    if (!req.user) return res.status(401).json(null)
+    
+    const fullUserWithoutPassword = await User.findOne({
+      where: { id: req.user.id },
+      attributes: {
+        exclude: ['password']
+      },
+      include: [{
+        model: BalanceOpinion,
+        as: 'BalanceOpinions',
+        attributes: ['id'],
+      }, {
+        model: BalanceReply,
+        as: 'BalanceReplys',
+        attributes: ['id'],
+      }]
+    })
 
-//     if(fullUserWithoutPassword) {
-//       res.status(200).json(fullUserWithoutPassword)
-//     } else
-//       res.status(404).json(null)
-//   } catch (error) {
-//     console.error(error);
-//     next(error)
-//   }
-// })
+    console.log(" 유저 데이터 :",fullUserWithoutPassword);
+    
+
+    if(fullUserWithoutPassword) {
+      res.status(200).json(fullUserWithoutPassword)
+    } else
+      res.status(404).json(null)
+  } catch (error) {
+    console.error(error);
+    next(error)
+  }
+})
 export default router;

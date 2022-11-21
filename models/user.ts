@@ -67,7 +67,11 @@ User.init({
 });
 
 export const associate = (db:dbType) => {
-  db.User.hasMany(db.Opinion, { as: 'Opnions' });
+  db.User.hasMany(db.Opinion, { as: 'Opinions' });
+  db.User.hasMany(db.BalanceOpinion, { as: 'BalanceOpinions' });
+  db.User.hasMany(db.BalanceReply, { as: 'BalanceReplys' });
+
+
   db.User.hasMany(db.CommunityPost, { as: 'CommunityPosts'} )
   db.User.hasMany(db.Comment, { as: 'Comments' });
   db.User.hasMany(db.Reply, { as: 'Replys' });

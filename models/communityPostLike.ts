@@ -22,7 +22,7 @@ CommunityPostLike.init({
 }, {
   sequelize,
   modelName: 'CommunityPostLike',
-  tableName: 'CommunityPostLiked',
+  tableName: 'cmu_post_like',
   charset: 'utf8',
   collate: 'utf8_general_ci',
 });
