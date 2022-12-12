@@ -1,11 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import { dbType } from '.';
+import BalanceOpinion from './balanceOpinion';
 import sequelize from './sequelize'
 
-class ProsConsDebatePost extends Model {
+class BalanceDebatePost extends Model {
   declare public readonly id : number;
   declare public category : string;
   declare public title : string;
+  declare public optionA : string;
+  declare public optionB : string;
   declare public description : string;
   declare public article : string;
   declare public issue1 : string;
@@ -13,16 +16,32 @@ class ProsConsDebatePost extends Model {
   declare public hit : number;
   declare public imgUrl : string;
   
+  //association fields
+  declare public UserId: number;
+  declare public BalanceOpinions: BalanceOpinion[];
+  declare public OptionAList: BalanceOpinion[];
+  declare public OptionBList: BalanceOpinion[];
+
+  // declare public countBalanceOpinions: HasManyCountAssociationsMixin;
+
   declare public readonly createdAt : Date;
   declare public readonly updatedAt : Date;
 }
 
-ProsConsDebatePost.init({
+BalanceDebatePost.init({
   category: {
     type: DataTypes.STRING(10),
     allowNull:false
   },
   title: {
+    type: DataTypes.STRING(50),
+    allowNull:false
+  },
+  optionA: {
+    type: DataTypes.STRING(50),
+    allowNull:false
+  },
+  optionB: {
     type: DataTypes.STRING(50),
     allowNull:false
   },
@@ -51,14 +70,17 @@ ProsConsDebatePost.init({
   },
 }, {
   sequelize,
-  modelName: 'ProsConsDebatePost',
-  tableName: 'proscons_dbt_post',
+  modelName: 'BalanceDebatePost',
+  tableName: 'bal_dbt_post',
   charset: 'utf8',
   collate: 'utf8_general_ci',
 });
 
 export const associate = (db:dbType) => {
-  db.ProsConsDebatePost.hasMany(db.Opinion) // 변경예정
+  db.BalanceDebatePost.hasMany(db.BalanceOpinion)
+  db.BalanceDebatePost.hasMany(db.BalanceOpinion, { as: 'OptionAList', scope: { selection: 'A' } })
+  db.BalanceDebatePost.hasMany(db.BalanceOpinion, { as: 'OptionBList', scope: { selection: 'B' } })
+  db.BalanceDebatePost.belongsTo(db.User)
 };
 
-export default ProsConsDebatePost;
+export default BalanceDebatePost;

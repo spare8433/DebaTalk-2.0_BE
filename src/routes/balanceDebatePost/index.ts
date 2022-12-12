@@ -1,28 +1,20 @@
 import express, { NextFunction, Request, Response } from 'express';
-import BalanceDebatePost from '../models/balanceDebatePost';
-import BalanceOpinion from '../models/balanceOpinion';
-import BalanceReply from '../models/balanceReply';
-import User from '../models/user';
-import { upload } from '../util/multer';
-import { isLoggedIn } from './middlewares';
+import { upload } from '../../util/multer';
+import { isLoggedIn } from '../middlewares';
+import { 
+  CreateOpinionRequestBody, CreatePostRequestData, CreateReplyRequestBody, GetPostRequestQuerry
+} from './type';
+import BalanceDebatePost from '@models/balanceDebatePost';
+import BalanceReply from '@models/balanceReply';
+import BalanceOpinion from '@models/balanceOpinion';
+import User from '@models/user';
 
 const router = express.Router();
 
 // balanceDebatePost 생성
-router.post('', isLoggedIn, upload.single('image'), async (req: Request, res: Response, next:NextFunction) => {
+router.post('', isLoggedIn, upload.single('image'), async (req: Request<any,any,any>, res: Response, next:NextFunction) => {
  try {
-  type ResponseData = {
-    method: string,
-    category: string,
-    title:string,
-    optionA:string,
-    optionB:string,
-    description:string,
-    issue1:string,
-    issue2:string,
-    article:string[]
-  }
-  const data:ResponseData = JSON.parse(req.body.data)
+  const data:CreatePostRequestData = req.body.data
   const balanceDebatePost = await BalanceDebatePost.create({
     method : data.method,
     category : data.category,
@@ -45,15 +37,15 @@ router.post('', isLoggedIn, upload.single('image'), async (req: Request, res: Re
 })
 
 // balanceDebatePost 가져오기
-router.get('', async (req: Request, res: Response, next:NextFunction) => {
+router.get('', async (req: Request<any,any,any,GetPostRequestQuerry>, res: Response, next:NextFunction) => {
   try {
     console.log(req.query.postId);
     
     const balanceDebatePostData = await BalanceDebatePost.findOne({
       where: { 
-        id: parseInt(req.query.postId as string),
+        id: parseInt(req.query.postId),
       },
-      order: [ [BalanceOpinion, { model:BalanceReply, as:'BalanceReplys' }, 'createdAt', 'ASC'] ],
+      order: [ [BalanceOpinion, { model:BalanceReply, as: 'Replys' }, 'createdAt', 'ASC'] ],
       include: [{
         model: BalanceOpinion,  
         attributes: { exclude: ['UserId', 'BalanceDebatePostId'] },
@@ -62,7 +54,7 @@ router.get('', async (req: Request, res: Response, next:NextFunction) => {
             attributes: ['id', 'nickname', 'imgUrl'],
           },{
             model: BalanceReply,
-            as: 'BalanceReplys',
+            as: 'Replys',
             attributes: { exclude: ['UserId', 'TargetId'] },
             include:[{
                 model: User,
@@ -85,7 +77,7 @@ router.get('', async (req: Request, res: Response, next:NextFunction) => {
         attributes: ['UserId'],
       }]
     })
-
+    console.log(balanceDebatePostData!.id);
     res.status(200).json(balanceDebatePostData)
   } catch (error) {
     console.log(error);
@@ -94,7 +86,7 @@ router.get('', async (req: Request, res: Response, next:NextFunction) => {
 })
 
 // balanceOpinion 작성
-router.post('/opinion', isLoggedIn, async (req: Request, res: Response, next:NextFunction) => {
+router.post('/opinion', isLoggedIn, async (req: Request<any,any,CreateOpinionRequestBody>, res: Response, next:NextFunction) => {
   try {
     const post = await BalanceDebatePost.findOne({
       where: { id: req.body.postId },
@@ -105,7 +97,7 @@ router.post('/opinion', isLoggedIn, async (req: Request, res: Response, next:Nex
     const comment = await BalanceOpinion.create({
       content: req.body.content,
       selection: req.body.selection,
-      BalanceDebatePostId: parseInt(req.body.postId),
+      BalanceDebatePostId: req.body.postId,
       UserId: req.user!.id,
     })
 
@@ -124,7 +116,7 @@ router.post('/opinion', isLoggedIn, async (req: Request, res: Response, next:Nex
  })
 
  // balanceReply 작성
-router.post('/reply', isLoggedIn, async (req: Request, res: Response, next:NextFunction) => {
+router.post('/reply', isLoggedIn, async (req: Request<any,any,CreateReplyRequestBody>, res: Response, next:NextFunction) => {
   try {
     const opinion = await BalanceOpinion.findOne({ where: { id: req.body.opinionId }, })
     if(!opinion) return res.status(403).send('존재하지 않는 의견 입니다.')
@@ -136,12 +128,12 @@ router.post('/reply', isLoggedIn, async (req: Request, res: Response, next:NextF
 
     const reply = await BalanceReply.create({
       content: req.body.content,
-      BalanceOpinionId: parseInt(req.body.opinionId),
+      BalanceOpinionId: req.body.opinionId,
       UserId: req.user!.id,
       TargetId: req.body.targetId
     })
 
-    const fullReply = await BalanceOpinion.findOne({
+    const fullReply = await BalanceReply.findOne({
       where: { id: reply.id },
       include: [{
         model: User,

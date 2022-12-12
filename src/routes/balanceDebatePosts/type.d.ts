@@ -1,4 +1,4 @@
-export type RequestBody = {
+export type GetPostsRequestBody = readonly {
   readonly category ?: string,
   readonly searchText ?: string,
   readonly limit ?: number,

@@ -7,20 +7,21 @@ import path from 'path'
 import dotenv from 'dotenv'
 import hpp from 'hpp'
 import helmet from 'helmet'
+
+
+import debatePostsRotuer from '@routes/debatePosts'
+import userRotuer from '@routes/user'
+
+import balanceDebatePostRotuer from '@routes/balanceDebatePost'
+import balanceDebatePostsRotuer from '@routes/balanceDebatePosts'
+import prosConsDebatePostRotuer from '@routes/prosConsDebatePost'
+import issueDebatePostRotuer from '@routes/issueDebatePost'
+import issueDebatePostsRotuer from '@routes/issueDebatePosts'
+
+
+import { sequelize } from '@models'
+import passportConfig from './src/passport'
 import passport from 'passport'
-
-import userRotuer from './routes/user'
-import debatePostsRotuer from './routes/debatePosts'
-import debatePostRotuer from './routes/debatePost'
-
-import balanceDebatePostRotuer from './routes/balanceDebatePost'
-import balanceDebatePostsRotuer from './routes/balanceDebatePosts'
-import prosConsDebatePostRotuer from './routes/prosConsDebatePost'
-import issueDebatePostRotuer from './routes/issueDebatePost'
-
-
-import { sequelize } from './models'
-import passportConfig from './passport'
 
 const app = express()
 
@@ -68,8 +69,8 @@ app.use('/balance-debate-post', balanceDebatePostRotuer)
 app.use('/balance-debate-posts', balanceDebatePostsRotuer)
 app.use('/proscons-debate-post', prosConsDebatePostRotuer)
 app.use('/issue-debate-post', issueDebatePostRotuer)
+app.use('/issue-debate-posts', issueDebatePostsRotuer)
 app.use('/debate-posts', debatePostsRotuer)
-app.use('/debate-post', debatePostRotuer)
 app.use('/user', userRotuer)
 // app.use('/hashtag', hashtagRotuer)
 

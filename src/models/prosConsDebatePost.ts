@@ -1,22 +1,32 @@
 import { Model, DataTypes } from 'sequelize';
 import { dbType } from '.';
+import ProsConsOpinion from './prosConsOpinion';
 import sequelize from './sequelize'
 
-class IssueDebatePost extends Model {
+class ProsConsDebatePost extends Model {
   declare public readonly id : number;
   declare public category : string;
   declare public title : string;
   declare public description : string;
   declare public article : string;
   declare public issue1 : string;
+  declare public issue2 : string;
   declare public hit : number;
   declare public imgUrl : string;
   
+  //association fields
+  declare public UserId: number;
+  declare public ProsConsOpinions: ProsConsOpinion[];
+  declare public OptionAList: ProsConsOpinion[];
+  declare public OptionBList: ProsConsOpinion[];
+
+  // declare public countBalanceOpinions: HasManyCountAssociationsMixin;
+
   declare public readonly createdAt : Date;
   declare public readonly updatedAt : Date;
 }
 
-IssueDebatePost.init({
+ProsConsDebatePost.init({
   category: {
     type: DataTypes.STRING(10),
     allowNull:false
@@ -37,6 +47,10 @@ IssueDebatePost.init({
     type: DataTypes.STRING(1000),
     allowNull:false
   },
+  issue2: {
+    type: DataTypes.STRING(1000),
+    allowNull:false
+  },
   imgUrl: {
     type: DataTypes.STRING(100),
   },
@@ -46,14 +60,17 @@ IssueDebatePost.init({
   },
 }, {
   sequelize,
-  modelName: 'IssueDebatePost',
-  tableName: 'issue_dbt_post',
+  modelName: 'ProsConsDebatePost',
+  tableName: 'prosCons_dbt_post',
   charset: 'utf8',
   collate: 'utf8_general_ci',
 });
 
 export const associate = (db:dbType) => {
-  db.IssueDebatePost.hasMany(db.Opinion) // 변경예정
+  db.ProsConsDebatePost.hasMany(db.ProsConsOpinion)
+  db.ProsConsDebatePost.hasMany(db.ProsConsOpinion, { as: 'OptionAList', scope: { selection: 'A' } })
+  db.ProsConsDebatePost.hasMany(db.ProsConsOpinion, { as: 'OptionBList', scope: { selection: 'B' } })
+  db.ProsConsDebatePost.belongsTo(db.User)
 };
 
-export default IssueDebatePost;
+export default ProsConsDebatePost;

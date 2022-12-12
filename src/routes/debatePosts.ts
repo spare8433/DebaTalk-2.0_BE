@@ -1,9 +1,11 @@
 import express from 'express';
 import DebatePost from '../models/debatePost';
-import date from '../util/date';
+import dayjs from 'dayjs'
+
 import { Op } from "sequelize";  
 
 const router = express.Router();
+const date = dayjs()
 
 // 메인 craousel 키워드
 router.get('/keywords', async (req, res, next) => {
