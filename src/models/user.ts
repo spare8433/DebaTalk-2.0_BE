@@ -70,9 +70,11 @@ export const associate = (db:dbType) => {
   db.User.hasMany(db.Opinion, { as: 'Opinions' });
   db.User.hasMany(db.BalanceOpinion, { as: 'BalanceOpinions' });
   db.User.hasMany(db.IssueOpinion, { as: 'IssueOpinions' });
+  db.User.hasMany(db.ProsConsOpinion, { as: 'ProsConsOpinions' });
 
   db.User.hasMany(db.BalanceReply, { as: 'BalanceReplys' });
   db.User.hasMany(db.IssueReply, { as: 'IssueReplys' });
+  db.User.hasMany(db.ProsConsReply, { as: 'ProsConsReplys' });
 
   db.User.hasMany(db.CommunityPost, { as: 'CommunityPosts'} )
   db.User.hasMany(db.Comment, { as: 'Comments' });

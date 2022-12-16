@@ -17,8 +17,8 @@ class ProsConsDebatePost extends Model {
   //association fields
   declare public UserId: number;
   declare public ProsConsOpinions: ProsConsOpinion[];
-  declare public OptionAList: ProsConsOpinion[];
-  declare public OptionBList: ProsConsOpinion[];
+  declare public OptionAgreeList: ProsConsOpinion[];
+  declare public OptionOpposeList: ProsConsOpinion[];
 
   // declare public countBalanceOpinions: HasManyCountAssociationsMixin;
 
@@ -68,8 +68,8 @@ ProsConsDebatePost.init({
 
 export const associate = (db:dbType) => {
   db.ProsConsDebatePost.hasMany(db.ProsConsOpinion)
-  db.ProsConsDebatePost.hasMany(db.ProsConsOpinion, { as: 'OptionAList', scope: { selection: 'A' } })
-  db.ProsConsDebatePost.hasMany(db.ProsConsOpinion, { as: 'OptionBList', scope: { selection: 'B' } })
+  db.ProsConsDebatePost.hasMany(db.ProsConsOpinion, { as: 'OptionAgreeList', scope: { selection: '찬성' } })
+  db.ProsConsDebatePost.hasMany(db.ProsConsOpinion, { as: 'OptionOpposeList', scope: { selection: '반대' } })
   db.ProsConsDebatePost.belongsTo(db.User)
 };
 
