@@ -1,0 +1,65 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "build": "tsc && tsc-alias",
+    "start": "cross-env NODE_ENV=production node dist/app.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec ts-node -r tsconfig-paths/register app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spare8433/DebaTalk-2.0_BE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/spare8433/DebaTalk-2.0_BE/issues"
+  },
+  "homepage": "https://github.com/spare8433/DebaTalk-2.0_BE#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1429.0",
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dayjs": "^1.11.8",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "helmet": "^7.0.0",
+    "hpp": "^0.2.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "multer-s3": "^3.0.1",
+    "mysql2": "^3.3.5",
+    "node": "^18.16.0",
+    "nodemailer": "^6.9.4",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "pm2": "^5.3.0",
+    "sequelize": "^6.32.0",
+    "sequelize-cli": "^6.6.1",
+    "tsc-alias": "^1.8.6"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.7",
+    "@types/hpp": "^0.2.2",
+    "@types/morgan": "^1.9.4",
+    "@types/multer": "^1.4.7",
+    "@types/multer-s3": "^3.0.0",
+    "@types/node": "^18.16.18",
+    "@types/nodemailer": "^6.4.9",
+    "@types/passport": "^1.0.12",
+    "@types/passport-local": "^1.0.35",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.3"
+  }
+}

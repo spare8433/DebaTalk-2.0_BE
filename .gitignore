@@ -1,0 +1,13 @@
+.env
+/node_modules
+/lambda/node_modules
+/lambda/package-lock.json
+/config
+/dist
+/package-lock.json
+
+# dev
+/uploads
+
+# test
+/test.*
